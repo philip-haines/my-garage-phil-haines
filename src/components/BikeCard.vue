@@ -3,7 +3,7 @@
     <v-card
       :key="bike.id"
       class="mt-6"
-      :img="setBikeImage(bike.model)"
+      :img="bikeImagePath"
       :class="[hover ? 'pointer' : '', isNavigation ? 'nav-card' : 'bike-card']"
       :to="{
           name: 'BikeView', 
@@ -34,23 +34,16 @@
         default: false
       }
     },
-    methods: {
-      setBikeImage(model){
-        const imagePaths = {
-          "Monster 821 Stealth": require("@/assets/images/monster-821-stealth.png"),
-          "F 750 GS": require("@/assets/images/f-750-gs.png"),
-          "Scout Bobber": require("@/assets/images/scout-bobber.png"),
-          "Panigale V4": require("@/assets/images/panigale-v4.png")
-        }
-
-        return imagePaths[model]
-      }
-    },
     computed: {
       handelizedModel(){
         if(!this.bike.model) return
 
         return this.bike.model.toLocaleLowerCase().split(" ").join("-")
+      },
+      bikeImagePath(){
+        if(!this.handelizedModel) return;
+
+        return require(`@/assets/images/${this.handelizedModel}.png`)
       }
     }
   }
