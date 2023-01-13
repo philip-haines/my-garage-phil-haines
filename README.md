@@ -6,6 +6,11 @@ npm install
 ```
 
 ### Compiles and hot-reloads for development
+#### Start json Server
+```
+json-server --watch db.json --port 8000
+```
+#### Start Vue Development Server
 ```
 npm run serve
 ```
