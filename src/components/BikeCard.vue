@@ -2,9 +2,13 @@
   <v-hover v-slot="{ hover }">
     <v-card
       :key="bike.id"
-      class="bike-card mt-6"
+      class="mt-6"
       :img="setBikeImage(bike.model)"
-      :class="{ 'pointer': hover }"
+      :class="[hover ? 'pointer' : '', isNavigation ? 'nav-card' : 'bike-card']"
+      :to="{
+          name: 'BikeView', 
+          params: {handle: handelizedModel, id: bike.id},
+        }"
     >
       <v-expand-transition>
         <div v-if="hover" class="overlay transition-fast-in-fast-out v-card--reveal display-3" style="height: 100%;">
@@ -23,6 +27,11 @@
       bike: {
         type: Object,
         required: true
+      },
+      isNavigation: {
+        type: Boolean,
+        required: false,
+        default: false
       }
     },
     methods: {
@@ -36,6 +45,13 @@
 
         return imagePaths[model]
       }
+    },
+    computed: {
+      handelizedModel(){
+        if(!this.bike.model) return
+
+        return this.bike.model.toLocaleLowerCase().split(" ").join("-")
+      }
     }
   }
 </script>
@@ -48,6 +64,11 @@
   .bike-card{
     width: 49%;
     height: 325px;
+  }
+
+  .nav-card{
+    width: 24%;
+    height: 200px;
   }
 
   .overlay{
