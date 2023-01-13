@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="6">
           <v-img 
-            :src="setBikeImage(bike.model)"
+            :src="bikeImagePath"
             :alt="bike.model"
           />
         </v-col>
@@ -53,16 +53,12 @@
       setBikeData(id){
         axios.get(`http://localhost:8000/bikes/${id}`)
         .then(res => this.bike = res.data)
-      },
-      setBikeImage(model){
-        const imagePaths = {
-          "Monster 821 Stealth": require("@/assets/images/monster-821-stealth.png"),
-          "F 750 GS": require("@/assets/images/f-750-gs.png"),
-          "Scout Bobber": require("@/assets/images/scout-bobber.png"),
-          "Panigale V4": require("@/assets/images/panigale-v4.png")
-        }
-
-        return imagePaths[model]
+      }
+    },
+    computed: {
+      bikeImagePath(){
+        if(!this.$route.params.handle) return
+        return require(`@/assets/images/${this.$route.params.handle}.png`)
       }
     }
   }
