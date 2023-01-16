@@ -9,7 +9,7 @@
       />
     </v-container>
     <div class="bikes-container d-flex justify-space-between align-center flex-wrap">
-      <template v-for="bike in filteredBikes">
+      <template v-for="bike in bikes">
         <bike-card :bike="bike" />
       </template>
     </div>
@@ -17,48 +17,26 @@
 </template>
 
 <script>
-  import axios from 'axios';
-
   import BikeCard from '@/components/BikeCard.vue';
   import BikeFilter from '@/components/BikeFilter.vue';
 
   export default {
     name: 'Bikes',
-    data(){
-      return {
-        bikes: [],
-        filteredBikes: [],
-      }
-    },
     components: {
       "bike-card": BikeCard,
       "bike-filter": BikeFilter
     },
-    mounted(){
-      this.getInitialData();
-    },
     methods: {
-      getInitialData(){
-        axios.get('http://localhost:8000/bikes').then(response => {
-          this.bikes = response.data
-          this.filteredBikes = [...this.bikes]
-        })
-      },
       filterBikes(manufacturer){
-        if(manufacturer === "All") {
-          this.filteredBikes = [...this.bikes]
-          return 
-        }
-
-        const filteredBikes = this.bikes.filter(bike => bike.manufacturer == manufacturer)
-        this.filteredBikes = filteredBikes
+        this.$store.commit('setFilteredBikes', manufacturer)
       }
     },
     computed:{
+      bikes(){
+        return this.$store.getters.filteredBikes.length ? this.$store.getters.filteredBikes : this.$store.getters.allBikes
+      },
       manufacturers(){
-        if(!this.bikes) return;
-
-        return new Set(["All", ...this.bikes.map(bike => bike.manufacturer)])
+        return this.$store.getters.allManufacturers
       }
     }
   }
