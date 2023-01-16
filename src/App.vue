@@ -31,5 +31,9 @@ export default {
   data: () => ({
     //
   }),
+
+  created(){
+    this.$store.dispatch('setInitialData')
+  }
 };
 </script>

@@ -12,25 +12,15 @@
 </template>
 
 <script>
-  import axios from "axios"
   import BikeCard from '@/components/BikeCard.vue';
   export default { 
     components: {
       "bike-card": BikeCard,
     },
-    data(){
-      return {
-        bikes: []
+    computed: {
+      bikes(){
+        return this.$store.getters.allBikes
       }
-    },
-    mounted(){
-      this.getInitialData()
-    },
-    methods: {
-      getInitialData(){
-        axios.get('http://localhost:8000/bikes').then(response => {
-          this.bikes = response.data
-        })
-      }
-    }}
+    }
+  }
 </script>
