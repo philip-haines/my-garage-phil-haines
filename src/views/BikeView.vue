@@ -33,7 +33,6 @@
 
 
 <script>
-  import axios from "axios"
   import Navigation from "@/components/Navigation.vue"
 
   export default {
@@ -41,21 +40,18 @@
     components: {
       "vue-navigation": Navigation
     },
-    data(){
-      return{
-        bike: {}
-      }
-    },
     mounted(){
       this.setBikeData(this.$route.params.id)
     },
     methods:{
       setBikeData(id){
-        axios.get(`http://localhost:8000/bikes/${id}`)
-        .then(res => this.bike = res.data)
+        this.$store.commit('setSelectedBike', id)
       }
     },
     computed: {
+      bike() {
+        return this.$store.getters.getSelectedBike
+      },
       bikeImagePath(){
         if(!this.$route.params.handle) return
         return require(`@/assets/images/${this.$route.params.handle}.png`)
