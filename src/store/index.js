@@ -6,36 +6,34 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    testNumber: 0,
-    filteredBikes: [],
+    manufacturer: 'All',
     allBikes: [],
-    selectedBike: {}
+    selectedBikeID: null
   },
   getters: {
     allBikes(state){
       return state.allBikes
     },
-    filteredBikes(state){
-      return state.filteredBikes
+    filteredBikes(state, getters){
+      if(state.manufacturer === 'All'){
+        return getters.allBikes
+      }
+
+      return [...getters.allBikes.filter(bike => bike.manufacturer == state.manufacturer)]
     },
     allManufacturers(_, getters){
       return new Set(["All", ...getters.allBikes.map(bike => bike.manufacturer)])
     },
-    getSelectedBike(state){
-      return state.selectedBike
+    selectedBike(state){
+      return state.allBikes.find(bike => bike.id === state.selectedBikeID)
     },
   },
   mutations: {
     setFilteredBikes(state, manufacturer){
-      if(manufacturer === 'All'){
-        state.filteredBikes = [...state.allBikes]
-        return
-      }
-
-      state.filteredBikes = [...state.allBikes.filter(bike => bike.manufacturer == manufacturer)]
+      state.manufacturer = manufacturer
     },
     setSelectedBike(state, bikeID){
-      state.selectedBike = state.allBikes.find(bike => bike.id == bikeID)
+      state.selectedBikeID = parseInt(bikeID)
     }
   },
   actions: {
