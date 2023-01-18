@@ -33,7 +33,9 @@
     },
     computed:{
       bikes(){
-        return this.$store.getters.filteredBikes.length ? this.$store.getters.filteredBikes : this.$store.getters.allBikes
+        if(!this.$store.getters.filteredBikes.length) return;
+
+        return this.$store.getters.filteredBikes
       },
       manufacturers(){
         return this.$store.getters.allManufacturers

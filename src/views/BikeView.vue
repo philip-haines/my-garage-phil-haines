@@ -50,7 +50,7 @@
     },
     computed: {
       bike() {
-        return this.$store.getters.getSelectedBike
+        return this.$store.getters.selectedBike
       },
       bikeImagePath(){
         if(!this.$route.params.handle) return
